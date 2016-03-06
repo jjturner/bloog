@@ -1,5 +1,8 @@
 class Post
-  attr_accessor :blog, :title, :body
+  extend ActiveModel::Naming
+  include ActiveModel::Conversion
+
+  attr_accessor :blog, :title, :body, :pubdate
 
   def initialize(attrs = {})
     attrs.each do |k,v|
@@ -7,7 +10,12 @@ class Post
     end
   end
 
-  def publish
+  def persisted?
+    false
+  end
+
+  def publish(clock=DateTime)
+    self.pubdate = clock.now
     blog.add_entry(self)
   end
 end
