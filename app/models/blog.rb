@@ -15,7 +15,7 @@ class Blog
   end
   
   def add_entry(entry)
-    entries << entry
+    @entries << entry
   end
 
   def new_post(*args)
@@ -24,7 +24,13 @@ class Blog
     end
   end
 
+  def entries
+    @entries.sort_by{|e| e.pubdate}.reverse.take(10)
+  end
+
   private
+    # this is an example of the 'Setter' injection strategy
+    # which manages how we create new Blog entries
     def post_source
       @post_source ||= Post.public_method(:new)
     end
